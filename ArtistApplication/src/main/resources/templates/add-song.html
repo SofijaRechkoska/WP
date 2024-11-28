@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Add Song - My Music Store</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABQqL7F5u1pZzAZ+fZP5zD3s7ih9DoMlv6X8QbR06J6f40SIsmU4k8w" crossorigin="anonymous">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="mb-4">Add Song</h2>
+    <form th:action="@{/songs/add}" method="post" class="p-4 bg-light rounded shadow-sm">
+        <!-- Hidden Input for ID -->
+        <input type="hidden" name="id" th:value="${song != null} ? ${song.id} : ''">
+
+        <!-- Song Title -->
+        <div class="mb-3">
+            <label for="title" class="form-label fw-bold">Song Title</label>
+            <input type="text"
+                   class="form-control"
+                   id="title"
+                   name="title"
+                   th:value="${song != null} ? ${song.title} : ''"
+                   required
+                   placeholder="Enter song title">
+        </div>
+
+        <!-- Track ID -->
+        <div class="mb-3">
+            <label for="trackId" class="form-label fw-bold">Track ID</label>
+            <input type="text"
+                   class="form-control"
+                   id="trackId"
+                   name="trackId"
+                   th:value="${song != null} ? ${song.trackId} : ''"
+                   placeholder="Enter track ID">
+        </div>
+
+        <!-- Genre -->
+        <div class="mb-3">
+            <label for="genre" class="form-label fw-bold">Genre</label>
+            <input type="text"
+                   class="form-control"
+                   id="genre"
+                   name="genre"
+                   th:value="${song != null} ? ${song.genre} : ''"
+                   placeholder="Enter genre">
+        </div>
+
+        <!-- Release Year -->
+        <div class="mb-3">
+            <label for="releaseYear" class="form-label fw-bold">Release Year</label>
+            <input type="number"
+                   class="form-control"
+                   id="releaseYear"
+                   name="releaseYear"
+                   th:value="${song != null} ? ${song.releaseYear} : ''"
+                   placeholder="Enter release year">
+        </div>
+
+        <!-- Albums Dropdown -->
+        <div class="mb-4">
+            <label for="album" class="form-label fw-bold">Albums</label>
+            <select name="albumId" class="form-select" id="album">
+                <option th:each="cat : ${albums}"
+                        th:value="${cat.id}"
+                        th:text="${cat.name}"
+                        th:selected="${song != null && song.album != null && song.album.id == cat.id}">
+                </option>
+            </select>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <button id="submit" type="submit" class="btn btn-primary px-4">Submit</button>
+            <a href="/products" class="btn btn-secondary px-4">Back</a>
+        </div>
+    </form>
+</div>
+
+<!-- Add Bootstrap JS (optional for some functionality like dropdowns) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0QojWw6V2rFwXq7W7fE8JGtvNlyiZ9ZxEx3RzB2fPbdi8Nwfr" crossorigin="anonymous"></script>
+</body>
+</html>
