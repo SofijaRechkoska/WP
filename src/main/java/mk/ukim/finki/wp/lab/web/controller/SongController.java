@@ -22,13 +22,22 @@ public class SongController {
     }
 
     @GetMapping
-    public String getSongsPage(@RequestParam(required = false) String error, Model model) {
-        if (error!=null && !error.isEmpty()){
-            model.addAttribute("error",error);
+    public String getSongsPage(@RequestParam(required = false) String error,
+                               @RequestParam(required = false) Long albumId,
+                               Model model) {
+        if (error != null && !error.isEmpty()) {
+            model.addAttribute("error", error);
         }
-        model.addAttribute("songs", songService.listSongs());
+        if (albumId != null) {
+            model.addAttribute("songs", songService.songsByAlbumId(albumId));
+        } else {
+            model.addAttribute("songs", songService.listSongs());
+        }
+
+        model.addAttribute("albums", albumService.findAll());
         return "listSongs";
     }
+
 
     @GetMapping("/add")
     public String getAddSongPage(Model model) {
@@ -46,18 +55,20 @@ public class SongController {
             @RequestParam Long albumId) {
 
         Album album = albumService.findAlbumById(albumId);
+        Song song;
         if (id != null) {
-            Song song = songService.findById(id);
+             song = songService.findById(id);
             song.setTitle(title);
             song.setTrackId(trackId);
             song.setGenre(genre);
             song.setReleaseYear(releaseYear);
             song.setAlbum(album);
         } else {
-            Song song = new Song(trackId, title, genre, releaseYear, new ArrayList<>(), album);
+             song = new Song(trackId, title, genre, releaseYear, new ArrayList<>(), album);
             songService.listSongs().add(song);
         }
-        return "redirect:/listSongs";
+        songService.save(song);
+        return "redirect:/songs";
     }
 
     @GetMapping("/edit-form/{id}")
@@ -75,15 +86,16 @@ public class SongController {
     public String deleteSong(@PathVariable Long id){
         Song song=songService.findById(id);
         if (song!=null){
-            songService.listSongs().remove(song);
+            songService.delete(song);
         }
         return "redirect:/songs";
     }
 
-    @PostMapping("/listSongs")
+    @PostMapping
     public String submitButton(
             @RequestParam String trackId,
             Model model){
-        return "redirect:/artist/"+trackId;
+        System.out.println("Selected Track ID: " + trackId);
+        return "redirect:/artist/" + trackId;
     }
 }

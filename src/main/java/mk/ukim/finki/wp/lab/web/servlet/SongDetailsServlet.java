@@ -16,7 +16,7 @@ import org.thymeleaf.web.servlet.JakartaServletWebApplication;
 
 import java.io.IOException;
 
-@WebServlet(name = "songDetails",urlPatterns = "/songDetailss")
+//@WebServlet(name = "songDetails",urlPatterns = "/songDetailss")
 public class SongDetailsServlet extends HttpServlet {
     private final SpringTemplateEngine springTemplateEngine;
     private final SongService songService;
@@ -35,7 +35,7 @@ public class SongDetailsServlet extends HttpServlet {
         String artistId=req.getParameter("artistId");
         Artist artist=artistService.ArtistfindById(Long.valueOf(artistId));
         Song song=songService.findByTrackId(trackId);
-        songService.addArtistToSong(artist,song);
+        songService.addArtistToSong(artist,song.getId());
 
         IWebExchange webExchange = JakartaServletWebApplication
                 .buildApplication(getServletContext())

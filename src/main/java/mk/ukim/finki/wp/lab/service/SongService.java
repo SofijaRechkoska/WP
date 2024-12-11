@@ -7,8 +7,12 @@ import java.util.List;
 
 public interface SongService{
     List<Song> listSongs();
-    Artist addArtistToSong(Artist artist, Song song);
+    void addArtistToSong(Artist artist, Long songId);
     Song findByTrackId(String trackId);
     Song findById(Long id);
+    List<Song> songsByAlbumId(Long id);
 
+    void save(Song song);
+
+    void delete(Song song);
 }

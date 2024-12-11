@@ -28,7 +28,7 @@ public class SongDetailsController {
             Model model){
         Song song=songService.findByTrackId(trackId);
         Artist artist=artistService.ArtistfindById(Long.valueOf(artistId));
-        songService.addArtistToSong(artist,song);
+        songService.addArtistToSong(artist,song.getId());
         model.addAttribute("song",song);
         return "songDetails";
     }

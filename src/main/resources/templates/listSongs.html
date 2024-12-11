@@ -19,21 +19,36 @@
             <p th:text="${error}"></p>
         </div>
 
+        <!-- Dropdown to select album -->
+        <form method="get" class="mb-4">
+            <div class="d-flex justify-content-center">
+                <select name="albumId" class="form-select w-auto">
+                    <option value="" selected>Choose an Album</option>
+                    <option th:each="album : ${albums}" th:value="${album.id}" th:text="${album.name}"></option>
+                </select>
+                <button type="submit" class="btn btn-primary ms-3">Filter</button>
+            </div>
+        </form>
+
         <h2 class="mb-4">Choose a Song</h2>
-        <form action="/songs/listSongs" method="post">
+
+        <!-- Form for submitting trackId -->
+        <form action="/songs" method="post">
             <div class="list-group">
                 <!-- Song Item -->
                 <div th:each="song : ${songs}" class="list-group-item d-flex align-items-center justify-content-between">
                     <div>
-                        <input type="radio" name="trackId" th:value="${song.getTrackId()}" class="form-check-input me-2">
-                        <span th:text="'Title: ' + ${song.getTitle()} + ', Genre: ' + ${song.getGenre()} + ', Release Year: ' + ${song.getReleaseYear()} + ', Album: ' + ${song.getAlbum().getName()}"></span>
+                        <input type="radio" name="trackId" th:value="${song.trackId}" class="form-check-input me-2">
+                        <span th:text="'Title: ' + ${song.title} + ', Genre: ' + ${song.genre} + ', Release Year: ' + ${song.releaseYear} + ', Album: ' + ${song.album.name}"></span>
                     </div>
+
                     <div>
-                        <a th:href="@{'/songs/edit-form/{id}' (id=${song.getId()})}" class="btn btn-sm btn-warning me-2">Edit</a>
-                        <a th:href="@{'/songs/delete/{id}' (id=${song.getId()})}" class="btn btn-sm btn-danger">Delete</a>
+                        <a th:href="@{'/songs/edit-form/{id}' (id=${song.id})}" class="btn btn-sm btn-warning me-2">Edit</a>
+                        <a th:href="@{'/songs/delete/{id}' (id=${song.id})}" class="btn btn-sm btn-danger">Delete</a>
                     </div>
                 </div>
             </div>
+
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary">Submit</button>
             </div>

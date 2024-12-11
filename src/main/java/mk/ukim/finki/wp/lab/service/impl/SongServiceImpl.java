@@ -2,7 +2,7 @@ package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Artist;
 import mk.ukim.finki.wp.lab.model.Song;
-import mk.ukim.finki.wp.lab.repository.SongRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.SongRepositoryJPA;
 import mk.ukim.finki.wp.lab.service.SongService;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +10,9 @@ import java.util.List;
 
 @Service
 public class SongServiceImpl implements SongService {
-    private final SongRepository songRepository;
+    private final SongRepositoryJPA songRepository;
 
-    public SongServiceImpl(SongRepository songRepository) {
+    public SongServiceImpl(SongRepositoryJPA songRepository) {
         this.songRepository = songRepository;
     }
 
@@ -21,11 +21,13 @@ public class SongServiceImpl implements SongService {
         return songRepository.findAll();
     }
 
-    @Override
-    public Artist addArtistToSong(Artist artist, Song song) {
-
-        return songRepository.addArtistToSong(artist,song);
+    public void addArtistToSong(Artist artist, Long songId) {
+        Song song = songRepository.findById(songId)
+                .orElseThrow(() -> new RuntimeException("Song not found"));
+        song.addArtist(artist);
+        songRepository.save(song);
     }
+
 
     @Override
     public Song findByTrackId(String trackId) {
@@ -34,6 +36,22 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Song findById(Long id) {
-        return songRepository.findById(id);
+        return songRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Song> songsByAlbumId(Long id) {
+        return songRepository.findAllByAlbum_Id(id);
+    }
+
+    @Override
+    public void save(Song song) {
+        songRepository.save(song);
+    }
+
+    @Override
+    public void delete(Song song) {
+        songRepository.delete(song);
+    }
+
 }
