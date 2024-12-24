@@ -21,21 +21,22 @@ public class ArtistController {
 
     @GetMapping("/{trackId}")
     public String getArtistPage(@PathVariable String trackId,
-                                Model model){
-        model.addAttribute("artists",artistService.listArtists());
-        model.addAttribute("trackId",trackId);
+                                Model model) {
+        model.addAttribute("artists", artistService.listArtists());
+        model.addAttribute("trackId", trackId);
         return "artistsList";
     }
+
     @PostMapping()
     public String addArtist(
             @RequestParam String trackId,
             @RequestParam String artistId,
             Model model
-    ){
-        Song song=songService.findByTrackId(trackId);
-        Artist artist=artistService.ArtistfindById(Long.valueOf(artistId));
-        model.addAttribute("song",song);
-        model.addAttribute("artist",artist);
+    ) {
+        Song song = songService.findByTrackId(trackId);
+        Artist artist = artistService.ArtistfindById(Long.valueOf(artistId));
+        model.addAttribute("song", song);
+        model.addAttribute("artist", artist);
         return "redirect:/songDetails?trackId=" + trackId + "&artistId=" + artistId;
     }
 }

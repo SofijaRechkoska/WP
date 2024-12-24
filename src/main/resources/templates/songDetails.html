@@ -1,20 +1,36 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org"><head>
     <meta charset="utf-8">
     <title>Song Details</title>
-
 </head>
 <body>
-    <header>
-        <h1 th:text="'Title:'+ ${song.getTitle()}"></h1>
-    </header>
-    <section>
-        <h2 th:text="'Genre:'+${song.getGenre()}"></h2>
-        <h2 th:text="'Release year:'+${song.getReleaseYear()}"></h2>
-        <h2>Performers:</h2>
-        <ul>
-            <li th:each="peformer:${song.getPerformers()}" th:text="${peformer.getFirstName()} + ' '+ ${peformer.getLastName()}"></li>
-        </ul>
-    </section>
-</body>
-</html>
+<header>
+    <h1 th:text="'Title: ' + ${song.getTitle()}"></h1>
+</header>
+<section>
+    <h2 th:text="'Genre: ' + ${song.getGenre()}"></h2>
+    <h2 th:text="'Release year: ' + ${song.getReleaseYear()}"></h2>
+    <h2>Performers:</h2>
+    <ul>
+        <li th:each="performer : ${song.getPerformers()}" th:text="${performer.getFirstName()} + ' ' + ${performer.getLastName()}"></li>
+    </ul>
+</section>
+
+<section>
+    <h2>Reviews:</h2>
+    <ul>
+        <li th:each="review : ${song.getReviews()}" th:text="${review.getComment()}"></li>
+    </ul>
+</section>
+
+<section>
+    <h3>Add Review:</h3>
+    <form th:action="@{/songDetails}" method="post">
+        <input type="hidden" th:name="trackId" th:value="${song.getTrackId()}">
+        <textarea th:name="comment" placeholder="Write your review"></textarea>
+        <button type="submit">Add Review</button>
+    </form>
+</section>
+
+
+
+</body></html>

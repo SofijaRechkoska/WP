@@ -1,6 +1,7 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
 import mk.ukim.finki.wp.lab.model.Artist;
+import mk.ukim.finki.wp.lab.model.Review;
 import mk.ukim.finki.wp.lab.model.Song;
 import mk.ukim.finki.wp.lab.repository.jpa.SongRepositoryJPA;
 import mk.ukim.finki.wp.lab.service.SongService;
@@ -52,6 +53,10 @@ public class SongServiceImpl implements SongService {
     @Override
     public void delete(Song song) {
         songRepository.delete(song);
+    }
+    public void addReview(String trackId,int rating,String comment){
+        Song song=songRepository.findByTrackId(trackId);
+        song.getReviews().add(new Review(rating,comment));
     }
 
 }

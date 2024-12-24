@@ -26,6 +26,9 @@ public class Song {
     @ManyToOne
     private Album album;
 
+    @OneToMany
+    List<Review> reviews;
+
     public Song(){
     }
 
@@ -36,6 +39,7 @@ public class Song {
         this.releaseYear = releaseYear;
         this.performers = performers;
         this.album = album;
+        this.reviews=new ArrayList<>();
     }
 
     public void addArtist(Artist artist) {

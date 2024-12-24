@@ -11,8 +11,7 @@ public interface SongService{
     Song findByTrackId(String trackId);
     Song findById(Long id);
     List<Song> songsByAlbumId(Long id);
-
     void save(Song song);
-
     void delete(Song song);
+    void addReview(String trackId,int rating,String comment);
 }
